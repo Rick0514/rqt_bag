@@ -36,3 +36,4 @@ rosrun rqt_bag rqt_bag
 2. create rqt plugin: http://wiki.ros.org/rqt/Tutorials/Create%20your%20new%20rqt%20plugin
 3. original repo.: https://github.com/ros-visualization/rqt_bag
 4. http://wiki.ros.org/python_qt_binding
+5. plugins: http://wiki.ros.org/rqt/Plugins
