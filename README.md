@@ -6,17 +6,17 @@ forked from https://github.com/ros-visualization/rqt_bag
 
 ### 1. Record bag and load bag
 
-[image](./docs/record.png)
+![image](./docs/record.png)
 
 ### 2. Show Ground-truth
 
 to be used in conjunction with [obj6dof](https://github.com/Rick0514/obj6dof)(a sim platform)
 
-[image](./docs/obj6dof.png)
+![image](./docs/obj6dof.png)
 
 add button to obtain arbitrary 2 frames' ground truth extrinsic in simulation platform.
 
-[image](./docs/gt.png)
+![image](./docs/gt.png)
 
 
 ## Usage
