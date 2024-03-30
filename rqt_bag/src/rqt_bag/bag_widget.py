@@ -75,9 +75,11 @@ class BagWidget(QWidget):
 
         self.setObjectName('BagWidget')
 
+        self.tmp_context = context
+        self.tmp_publish_clock = publish_clock
+
         self._timeline = BagTimeline(context, publish_clock)
         self.graphics_view.setScene(self._timeline)
-
         self.graphics_view.resizeEvent = self._resizeEvent
         self.graphics_view.setMouseTracking(True)
 
@@ -270,6 +272,7 @@ class BagWidget(QWidget):
                 filename += ".bag"
 
             # Begin recording
+            self.save_button.setEnabled(True)
             self.load_button.setEnabled(False)
             self._recording = True
             self._timeline.record_bag(filename, all_topics, selected_topics)
@@ -332,6 +335,32 @@ class BagWidget(QWidget):
         # self clear loading filename
 
     def _handle_save_clicked(self):
+        
+        if self._recording:
+            self.save_button.setEnabled(False)
+            self._recording = False
+            self._timeline.handle_close()
+            
+            # reset
+            self._timeline = BagTimeline(self.tmp_context, self.tmp_publish_clock)
+            self._timeline.status_bar_changed_signal.connect(self._update_status_bar)
+            
+            self.graphics_view.scene().clear()
+            # self.graphics_view.resetTransform()  # Reset any transformations
+            # self.graphics_view.setAlignment(Qt.AlignLeft | Qt.AlignTop)  # Set alignment, if necessary
+            self.graphics_view.setScene(self._timeline)
+            self._resizeEvent(None)
+            
+            self.graphics_view.update()
+            self.graphics_view.setMouseTracking(True)
+
+            self.graphics_view.mousePressEvent = self._timeline.on_mouse_down
+            self.graphics_view.mouseReleaseEvent = self._timeline.on_mouse_up
+            self.graphics_view.mouseMoveEvent = self._timeline.on_mouse_move
+            self.graphics_view.wheelEvent = self._timeline.on_mousewheel
+            
+            return
+
         # Get the bag name to record to, prepopulating with a file name based on the current date/time
         proposed_filename = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))
         filename = QFileDialog.getSaveFileName(
